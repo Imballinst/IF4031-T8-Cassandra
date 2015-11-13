@@ -1,0 +1,26 @@
+# Create and Use Database
+
+create keyspace twitter_aji with replication={'class':'SimpleStrategy', 'replication_factor':1};
+use twitter_aji;
+
+# Create tables
+
+CREATE TABLE users (username text PRIMARY KEY, password text);
+CREATE TABLE friends (username text, friend text, since timestamp, PRIMARY KEY (username, friend));
+CREATE TABLE followers (username text, follower text, since timestamp, PRIMARY KEY (username, follower));
+CREATE TABLE tweets (tweet_id uuid PRIMARY KEY, username text, body text);
+CREATE TABLE userline (username text, time timeuuid, tweet_id uuid, PRIMARY KEY (username, time)) WITH CLUSTERING ORDER BY (time DESC);
+CREATE TABLE timeline (username text, time timeuuid, tweet_id uuid, PRIMARY KEY (username, time)) WITH CLUSTERING ORDER BY (time DESC);
+
+# Insert
+
+session.execute("INSERT INTO users (username, password) VALUES ('"+ username + "', '"+ password +"')");
+session.execute("INSERT INTO friends (username, friend, since) VALUES ('"+ username + "', '"+ friend +"', '"+ timestamp +"')");
+session.execute("INSERT INTO followers (username, follower, since) VALUES ('"+ username + "', '"+ follower +"', '"+ timestamp +"')");
+session.execute("INSERT INTO tweets (tweet_id, username, body) VALUES ('"+ tweet_uuid +"', '"+ username + "', '"+ body +"')");
+session.execute("INSERT INTO userline (username, time, tweet_id) VALUES ('"+ username + "', '"+ time_uuid +"', '"+ tweet_uuid +"')");
+session.execute("INSERT INTO timeline (username, time, tweet_id) VALUES ('"+ username + "', '"+ time_uuid +"', '"+ tweet_uuid +"')");
+
+# Test
+
+CREATE TABLE users (u_id uuid PRIMARY KEY, body text);
